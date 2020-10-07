@@ -1,25 +1,18 @@
-import React, {
-  ChangeEvent,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { Link } from 'react-router-dom';
-import { FaEnvelope, FaLock } from 'react-icons/fa';
+import React, { ChangeEvent, useCallback, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { FaEnvelope, FaLock, FaUser } from 'react-icons/fa';
 import { store } from 'react-notifications-component';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
-import { AuthContext } from '../../context/auth';
 
 import { Container, Content, Background, Form, FormActions } from './styles';
+import IDevForm from '../../interfaces/devForm';
 import api from '../../services/api';
-import ICredentiaslDev from '../../interfaces/credentialsDev';
 
-const SignInDev: React.FC = () => {
-  const { user, signInDev } = useContext(AuthContext);
-
-  const [model, setModel] = useState<ICredentiaslDev>({
+const SignUpDev: React.FC = () => {
+  const history = useHistory();
+  const [model, setModel] = useState<IDevForm>({
+    name: '',
     email: '',
     password: '',
   });
@@ -39,10 +32,10 @@ const SignInDev: React.FC = () => {
       e.preventDefault();
 
       try {
-        await signInDev(model);
+        await api.post('/users', model);
         store.addNotification({
           title: 'Sucesso!',
-          message: 'Usuário autenticado com sucesso!',
+          message: 'Usuário cadastrado com sucesso!',
           type: 'success',
           insert: 'top',
           container: 'top-right',
@@ -52,10 +45,11 @@ const SignInDev: React.FC = () => {
             duration: 2000,
           },
         });
+        history.push('/sign-in/dev');
       } catch (err) {
         store.addNotification({
           title: 'Erro!',
-          message: 'Falha ao autenticar usuário!',
+          message: 'Falha ao cadastrar usuário!',
           type: 'danger',
           insert: 'top',
           container: 'top-right',
@@ -67,18 +61,23 @@ const SignInDev: React.FC = () => {
         });
       }
     },
-    [model, signInDev],
+    [model, history],
   );
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   return (
     <Container>
+      <Background />
       <Content>
         <Form onSubmit={onSubmit}>
-          <h1>Login com Dev</h1>
+          <h1>Cadastro de Dev</h1>
+          <Input
+            icon={FaUser}
+            placeholder="Nome"
+            type="text"
+            name="name"
+            value={model.name}
+            onChange={updateModel}
+          />
           <Input
             icon={FaEnvelope}
             placeholder="E-mail"
@@ -96,16 +95,15 @@ const SignInDev: React.FC = () => {
             value={model.password}
             onChange={updateModel}
           />
-          <Button type="submit">Entrar</Button>
+          <Button type="submit">Cadastrar</Button>
           <FormActions>
-            <Link to="/sign-up/dev">Faça seu cadastro</Link>
-            <Link to="/">Voltar</Link>
+            <Link to="/sign-in/dev">Já tenho conta</Link>
+            <Link to="/sign-in/dev">Voltar</Link>
           </FormActions>
         </Form>
       </Content>
-      <Background />
     </Container>
   );
 };
 
-export default SignInDev;
+export default SignUpDev;
