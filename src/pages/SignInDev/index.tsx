@@ -1,23 +1,16 @@
-import React, {
-  ChangeEvent,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { store } from 'react-notifications-component';
 import Button from '../../components/Button';
 import Input from '../../components/Input';
-import { AuthContext } from '../../context/auth';
 
 import { Container, Content, Background, Form, FormActions } from './styles';
-import api from '../../services/api';
 import ICredentiaslDev from '../../interfaces/credentialsDev';
+import useAuth from '../../hooks/auth';
 
 const SignInDev: React.FC = () => {
-  const { user, signInDev } = useContext(AuthContext);
+  const { user, signInDev } = useAuth();
 
   const [model, setModel] = useState<ICredentiaslDev>({
     email: '',

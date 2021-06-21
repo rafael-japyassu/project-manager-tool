@@ -16,9 +16,11 @@ interface IAuthState {
   user: IUser;
 }
 
-interface IAuthContextState {
+export interface IAuthContextState {
   user: IUser;
+  token: string;
   signInDev(credentials: ICredentiaslDev): Promise<void>;
+  signOut(): void;
 }
 
 export const AuthContext = createContext<IAuthContextState>(
@@ -51,8 +53,17 @@ export const AuthProvider: React.FC = ({ children }) => {
     });
   }, []);
 
+  const signOut = useCallback(() => {
+    localStorage.removeItem('ProjectManagerToken');
+    localStorage.removeItem('ProjectManagerUser');
+
+    setData({} as IAuthState);
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ signInDev, user: data.user }}>
+    <AuthContext.Provider
+      value={{ signInDev, user: data.user, token: data.token, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

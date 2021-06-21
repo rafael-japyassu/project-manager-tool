@@ -7,13 +7,16 @@ import GlobalStyles from './styles/global';
 
 import 'react-notifications-component/dist/theme.css';
 import AppProvider from './context';
+import AppLayout from './components/AppLayout';
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
       <ReactNotification />
       <AppProvider>
-        <Routes />
+        <AppLayout>
+          <Routes />
+        </AppLayout>
       </AppProvider>
       <GlobalStyles />
     </BrowserRouter>
