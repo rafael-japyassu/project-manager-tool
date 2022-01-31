@@ -1,5 +1,6 @@
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
+import Clients from '../pages/Clients';
 import Dashboard from '../pages/Dashboard';
 import SignInClient from '../pages/SignInClient';
 import SignInDev from '../pages/SignInDev';
@@ -16,6 +17,7 @@ const Routes: React.FC = () => {
       <Route path="/sign-up/dev" exact component={SignUpDev} />
       <Route path="/sign-in/client" exact component={SignInClient} />
       <Route path="/dashboard" exact component={Dashboard} isPrivate />
+      <Route path="/clients" exact component={Clients} isPrivate />
       <Redirect to="/" />
     </Switch>
   );

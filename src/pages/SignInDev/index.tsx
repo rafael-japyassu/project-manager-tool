@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useCallback, useEffect, useState } from 'react';
+import React, { ChangeEvent, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { store } from 'react-notifications-component';
@@ -10,7 +10,7 @@ import ICredentiaslDev from '../../interfaces/credentialsDev';
 import useAuth from '../../hooks/auth';
 
 const SignInDev: React.FC = () => {
-  const { user, signInDev } = useAuth();
+  const { signInDev } = useAuth();
 
   const [model, setModel] = useState<ICredentiaslDev>({
     email: '',
@@ -33,18 +33,6 @@ const SignInDev: React.FC = () => {
 
       try {
         await signInDev(model);
-        store.addNotification({
-          title: 'Sucesso!',
-          message: 'Usuário autenticado com sucesso!',
-          type: 'success',
-          insert: 'top',
-          container: 'top-right',
-          animationIn: ['animate__animated', 'animate__fadeIn'],
-          animationOut: ['animate__animated', 'animate__fadeOut'],
-          dismiss: {
-            duration: 2000,
-          },
-        });
       } catch (err) {
         store.addNotification({
           title: 'Erro!',
@@ -62,10 +50,6 @@ const SignInDev: React.FC = () => {
     },
     [model, signInDev],
   );
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   return (
     <Container>

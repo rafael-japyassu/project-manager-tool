@@ -28,7 +28,7 @@ const Header: React.FC = () => {
           title="Clientes"
           icon={FaUsers}
           action={() => {
-            push('/dashboard');
+            push('/clients');
           }}
         />
         <HeaderMenuItem
